@@ -1,0 +1,66 @@
+// TELAPOKA — PostgreSQL variant for Vercel / Neon / Vercel Postgres.
+// Usage on production:
+//   1. Copy this file over prisma/schema.prisma  (or change provider manually)
+//   2. Set DATABASE_URL to your Postgres connection string (with ?sslmode=require)
+//   3. Run: npx prisma db push
+// The rest of the schema is identical to the SQLite one.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tracker {
+  id          String   @id @default(cuid())
+  name        String
+  icon        String   @default("wifi")
+  color       String   @default("#E11D2E")
+  defaultDue  Float
+  reminderDay Int      @default(5)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  people      Person[]
+}
+
+model Person {
+  id        String    @id @default(cuid())
+  trackerId String
+  tracker   Tracker   @relation(fields: [trackerId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String?
+  photo     String?
+  dueAmount Float
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  payments  Payment[]
+
+  @@unique([trackerId, name])
+}
+
+model Payment {
+  id        String   @id @default(cuid())
+  personId  String
+  person    Person   @relation(fields: [personId], references: [id], onDelete: Cascade)
+  trackerId String
+  month     String // "2026-11"
+  amount    Float
+  method    String   @default("CASH") // CASH | BKASH | NAGAD | BANK | OTHER
+  paidAt    DateTime @default(now())
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([personId, month])
+  @@index([trackerId, month])
+}
+
+model Settings {
+  id           String   @id @default("global")
+  currency     String   @default("৳")
+  currencyCode String   @default("BDT")
+  reminderDay  Int      @default(5)
+  updatedAt    DateTime @updatedAt
+}

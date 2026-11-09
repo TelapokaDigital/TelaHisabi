@@ -1,0 +1,18 @@
+{
+  "name": "TELAPOKA — Shared Payment Tracker",
+  "short_name": "TELAPOKA",
+  "description": "Privately track recurring money you collect from people — WiFi, rent, shared services.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDF9F8",
+  "theme_color": "#E11D2E",
+  "lang": "en",
+  "icons": [
+    { "src": "/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
